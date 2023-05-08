@@ -1,0 +1,11 @@
+.popup__container_for_form {
+  gap: 48px;
+  padding: 34px 36px 37px;
+}
+
+@media screen and (max-width: 600px) {
+  .popup__container_for_form {
+    gap: 74px;
+    padding: 25px 22px;
+  }
+}

@@ -1,0 +1,10 @@
+.popup__container_for_delete-card {
+  gap: 30px;
+  padding: 34px 36px 37px;
+}
+
+@media screen and (max-width: 600px) {
+  .popup__container_for_delete-card {
+    padding: 25px 22px;
+  }
+}

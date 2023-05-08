@@ -1,0 +1,5 @@
+.popup__submit-btn {
+  background-color: var(--dark-color);
+  margin-top: 8px;
+  color: var(--light-color);
+}

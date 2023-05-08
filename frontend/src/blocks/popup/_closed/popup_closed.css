@@ -1,0 +1,16 @@
+@keyframes disappear {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.popup_closed {
+  opacity: 0;
+  visibility: hidden;
+  animation: disappear 0.3s linear 1;
+}

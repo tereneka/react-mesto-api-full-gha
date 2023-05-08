@@ -1,0 +1,10 @@
+.popup__container_for_tooltip {
+  align-items: center;
+  gap: 32px;
+}
+
+@media screen and (max-width: 600px) {
+  .popup__container_for_tooltip {
+    gap: 40px;
+  }
+}

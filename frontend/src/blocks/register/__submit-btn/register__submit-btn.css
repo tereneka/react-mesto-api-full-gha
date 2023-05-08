@@ -1,0 +1,14 @@
+.register__submit-btn {
+  background-color: var(--light-color);
+  color: var(--dark-color);
+}
+
+.register__submit-btn {
+  margin-top: 176px;
+}
+
+@media screen and (max-width: 600px) {
+  .register__submit-btn {
+    margin-top: 133px;
+  }
+}

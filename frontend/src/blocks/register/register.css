@@ -1,0 +1,12 @@
+.register {
+  width: 358px;
+  color: var(--light-color);
+  margin: 60px auto 0;
+}
+
+@media screen and (max-width: 600px) {
+  .register {
+    width: calc(100% - 60px);
+    margin-top: 40px;
+  }
+}

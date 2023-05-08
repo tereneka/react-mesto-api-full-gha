@@ -1,0 +1,4 @@
+.popup__input {
+  color: var(--dark-color);
+  border-bottom-color: rgb(0, 0, 0, 0.2);
+}

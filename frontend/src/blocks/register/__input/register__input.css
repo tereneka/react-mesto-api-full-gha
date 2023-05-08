@@ -1,0 +1,6 @@
+.register__input {
+  color: var(--light-color);
+  background-color: var(--dark-color);
+  border-bottom-color: rgb(204, 204, 204);
+  width: 100%;
+}
