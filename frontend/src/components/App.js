@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { api } from "../utils/api";
-import { auth } from "../utils/auth";
-import AddPlacePopup from "./AddPlacePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
-import EditProfilePopup from "./EditProfilePopup";
-import ErrorMessage from "./ErrorMessage";
-import Footer from "./Footer";
-import Header from "./Header";
-import ImagePopup from "./ImagePopup";
-import InfoTooltip from "./InfoTooltip";
-import RouterApp from "./RouterApp";
-import Spinner from "./Spinner";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { api } from '../utils/api';
+import { auth } from '../utils/auth';
+import AddPlacePopup from './AddPlacePopup';
+import EditAvatarPopup from './EditAvatarPopup';
+import EditProfilePopup from './EditProfilePopup';
+import ErrorMessage from './ErrorMessage';
+import Footer from './Footer';
+import Header from './Header';
+import ImagePopup from './ImagePopup';
+import InfoTooltip from './InfoTooltip';
+import RouterApp from './RouterApp';
+import Spinner from './Spinner';
 
 function App() {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ function App() {
     {}
   );
   const [currentUserEmail, setCurrentUserEmail] =
-    useState("");
+    useState('');
 
   const [cards, setCards] = useState([]);
 
@@ -42,15 +42,15 @@ function App() {
   const [selectedCard, setSelectedCard] =
     useState(null);
   const [tooltipData, setTooltipData] = useState({
-    state: "",
-    message: "",
+    state: '',
+    message: '',
   });
   const [
     isFormDataLoading,
     setIsFormDataLoading,
   ] = useState(false);
 
-  const [isError, setIsError] = useState("");
+  const [isError, setIsError] = useState('');
 
   const [isContentLoading, setIsContentLoading] =
     useState(false);
@@ -137,26 +137,26 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard(null);
-    setTooltipData({ state: "", message: "" });
+    setTooltipData({ state: '', message: '' });
   }
 
   function handleLogin(values) {
     auth
-      .authorize(values)
+      .login(values)
       .then((data) => {
         if (data) {
           setLoggedIn(true);
           setCurrentUserEmail(values.email);
-          navigate("/");
+          navigate('/');
         }
       })
       .catch((err) => {
         setTooltipData({
-          state: "error",
+          state: 'error',
           message: `${
             err === 401
-              ? "Неверный Email или пароль. Попробуйте ещё раз."
-              : "Что-то пошло не так! Попробуйте ещё раз."
+              ? 'Неверный Email или пароль. Попробуйте ещё раз.'
+              : 'Что-то пошло не так! Попробуйте ещё раз.'
           }`,
         });
       });
@@ -168,54 +168,80 @@ function App() {
       .then((res) => {
         if (res.data) {
           setTooltipData({
-            state: "success",
+            state: 'success',
             message:
-              "Вы успешно зарегистрировались!",
+              'Вы успешно зарегистрировались!',
           });
-          navigate("/sign-in");
+          navigate('/sign-in');
         }
       })
       .catch((err) => {
         setTooltipData({
-          state: "error",
+          state: 'error',
           message:
-            "Что-то пошло не так! Попробуйте ещё раз.",
+            'Что-то пошло не так! Попробуйте ещё раз.',
         });
       });
   }
 
-  function handleTokenCheck() {
-    if (localStorage.getItem("jwt")) {
-      setIsContentLoading(true);
-      auth
-        .checkToken()
-        .then((res) => {
-          if (res.data) {
-            setLoggedIn(true);
-            setCurrentUserEmail(res.data.email);
-            navigate("/");
-          }
-        })
-        .catch(() => {
-          localStorage.removeItem("jwt");
-          setIsContentLoading(false);
-        });
-    }
-  }
+  // function handleTokenCheck() {
+  //   if (localStorage.getItem('jwt')) {
+  //     setIsContentLoading(true);
+  //     auth
+  //       .checkToken()
+  //       .then((res) => {
+  //         if (res.data) {
+  //           setLoggedIn(true);
+  //           setCurrentUserEmail(res.data.email);
+  //           navigate('/');
+  //         }
+  //       })
+  //       .catch(() => {
+  //         localStorage.removeItem('jwt');
+  //         setIsContentLoading(false);
+  //       });
+  //   }
+  // }
 
   useEffect(() => {
-    handleTokenCheck();
+    // handleTokenCheck();
+    api
+      .getUserInfo()
+      .then((data) => {
+        setLoggedIn(true);
+        setCurrentUser(data);
+        setCurrentUserEmail(data.email);
+        navigate('/');
+      })
+      .catch((err) => {
+        setIsContentLoading(false);
+      });
   }, []);
 
+  // useEffect(() => {
+  //   if (loggedIn) {
+  //     Promise.all([
+  //       api.getUserInfo(),
+  //       api.getCards(),
+  //     ])
+  //       .then(([user, cards]) => {
+  //         setCurrentUser(user);
+  //         setCards([...cards]);
+  //       })
+  //       .catch((err) => {
+  //         setIsError(err);
+  //       })
+  //       .finally(() =>
+  //         setIsContentLoading(false)
+  //       );
+  //   }
+  // }, [loggedIn]);
   useEffect(() => {
     if (loggedIn) {
-      Promise.all([
-        api.getUserInfo(),
-        api.getCards(),
-      ])
-        .then(([user, cards]) => {
-          setCurrentUser(user);
-          setCards([...cards]);
+      api
+        .getCards()
+        .then((data) => {
+          setCards([...data]);
         })
         .catch((err) => {
           setIsError(err);
@@ -235,7 +261,7 @@ function App() {
       {isContentLoading && <Spinner />}
 
       {!isContentLoading && !isError && (
-        <div className="content">
+        <div className='content'>
           <CurrentUserContext.Provider
             value={currentUser}>
             <Header

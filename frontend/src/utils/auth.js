@@ -1,4 +1,4 @@
-import { authConfig } from "./utils";
+import { authConfig } from './utils';
 
 class Auth {
   constructor({ baseUrl, headers }) {
@@ -14,6 +14,7 @@ class Auth {
   }) {
     return fetch(`${this._baseUrl}/${endpoint}`, {
       method,
+      credentials: 'include',
       headers: {
         ...this._headers,
         ...optionalHeaders,
@@ -30,8 +31,8 @@ class Auth {
 
   register({ password, email }) {
     return this._getApi({
-      endpoint: "signup",
-      method: "POST",
+      endpoint: 'signup',
+      method: 'POST',
       body: {
         password,
         email,
@@ -39,32 +40,34 @@ class Auth {
     });
   }
 
-  authorize({ password, email }) {
+  login({ password, email }) {
     return this._getApi({
-      endpoint: "signin",
-      method: "POST",
+      endpoint: 'signin',
+      method: 'POST',
       body: {
         password,
         email,
       },
-    }).then((data) => {
-      if (data.token) {
-        localStorage.setItem("jwt", data.token);
-        return data;
-      }
     });
   }
 
-  checkToken() {
-    const jwt = localStorage.getItem("jwt");
+  logout() {
     return this._getApi({
-      endpoint: "users/me",
-      method: "GET",
-      optionalHeaders: {
-        Authorization: `Bearer ${jwt}`,
-      },
+      endpoint: 'signout',
+      method: 'POST',
     });
   }
+
+  // checkToken() {
+  //   const jwt = localStorage.getItem('jwt');
+  //   return this._getApi({
+  //     endpoint: 'users/me',
+  //     method: 'GET',
+  //     optionalHeaders: {
+  //       Authorization: `Bearer ${jwt}`,
+  //     },
+  //   });
+  // }
 }
 
 export const auth = new Auth(authConfig);

@@ -7,8 +7,9 @@ const { router } = require('./routes/router');
 const error = require('./middlewares/error');
 const customErr = require('./middlewares/customError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, NODE_ENV } = process.env;
 const app = express();
 
 app.use(express.json());
@@ -26,6 +27,8 @@ app.use(cookieParser()); // подключаем парсер кук как ми
 
 app.use(requestLogger); // подключаем логгер запросов
 
+app.use(cors);
+
 app.use(router);
 
 app.use(errorLogger); // подключаем логгер ошибок
@@ -37,5 +40,5 @@ app.use(customErr);
 app.use(error);
 
 app.listen(PORT, () => {
-  console.log(`App listening on port: ${PORT}`);
+  console.log(`App listening in ${NODE_ENV || 'develop'} mode on port ${PORT}`);
 });

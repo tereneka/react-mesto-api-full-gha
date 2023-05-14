@@ -1,4 +1,4 @@
-import { dbConfig } from "./utils";
+import { dbConfig } from './utils';
 
 class Api {
   constructor({ baseUrl, headers }) {
@@ -9,6 +9,7 @@ class Api {
   _getApi(endpoint, method, body) {
     return fetch(`${this._baseUrl}/${endpoint}`, {
       method,
+      credentials: 'include',
       headers: this._headers,
       body,
     }).then((res) => this._getResult(res));
@@ -21,14 +22,14 @@ class Api {
   }
 
   getUserInfo() {
-    return this._getApi("users/me", "GET");
+    return this._getApi('users/me', 'GET');
   }
 
   setAvatar({ avatar }) {
     const body = JSON.stringify({ avatar });
     return this._getApi(
-      "users/me/avatar",
-      "PATCH",
+      'users/me/avatar',
+      'PATCH',
       body
     );
   }
@@ -36,27 +37,27 @@ class Api {
   setUserInfo({ name, about }) {
     const body = JSON.stringify({ name, about });
     return this._getApi(
-      "users/me",
-      "PATCH",
+      'users/me',
+      'PATCH',
       body
     );
   }
 
   getCards() {
-    return this._getApi("cards", "GET");
+    return this._getApi('cards', 'GET');
   }
 
   postCard({ name, link }) {
     const body = JSON.stringify({ name, link });
-    return this._getApi("cards", "POST", body);
+    return this._getApi('cards', 'POST', body);
   }
 
   deleteCard(id) {
-    return this._getApi(`cards/${id}`, "DELETE");
+    return this._getApi(`cards/${id}`, 'DELETE');
   }
 
   setCardLikeStatus(id, isLiked) {
-    const method = isLiked ? "DELETE" : "PUT";
+    const method = isLiked ? 'DELETE' : 'PUT';
     return this._getApi(
       `cards/${id}/likes`,
       method
