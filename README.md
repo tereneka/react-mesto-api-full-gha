@@ -8,7 +8,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 158.160.39.216
+IP 158.160.39.216
 
 Frontend https://mesto.tereneka.nomoredomains.monster
 
