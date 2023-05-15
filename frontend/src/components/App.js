@@ -147,6 +147,7 @@ function App() {
       .register(values)
       .then((data) => {
         if (data) {
+          setTooltipData({ state: 'success', message: 'Вы успешно зарегистрировались!' });
           setLoggedIn(true);
           setCurrentUser(data);
           navigate('/');

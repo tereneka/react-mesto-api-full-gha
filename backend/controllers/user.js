@@ -24,7 +24,7 @@ const getCurrentUser = (req, res, next) => {
     .catch(next);
 };
 
-function sendCookie(email, res, user) {
+function sendCookie(res, user) {
   const token = jwt.sign(
     { _id: user._id },
     NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
@@ -56,7 +56,7 @@ const createUser = (req, res, next) => {
     })
       .then((user) => {
         res.status(SUCCESS);
-        sendCookie(email, res, user);
+        sendCookie(res, user);
       })
       .catch(next);
   });
@@ -66,7 +66,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
 
   User.findUserByCredentials(email, password)
-    .then((user) => sendCookie(email, res, user))
+    .then((user) => sendCookie(res, user))
     .catch(next);
 };
 

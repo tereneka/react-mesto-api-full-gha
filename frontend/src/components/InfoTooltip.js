@@ -11,12 +11,6 @@ export default function InfoTooltip({
   const isSuccess =
     data.state && data.state === "success";
 
-  // const text = `${
-  //   isSuccess
-  //     ? "Вы успешно зарегистрировались!"
-  //     : "Что-то пошло не так! Попробуйте ещё раз."
-  // }`;
-
   const imgSrc = `${
     isSuccess ? successImg : errorImg
   }`;
