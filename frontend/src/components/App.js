@@ -143,6 +143,7 @@ function App() {
   }
 
   function handleRegister(values) {
+    setIsContentLoading(true);
     auth
       .register(values)
       .then((data) => {
@@ -159,10 +160,12 @@ function App() {
           message:
             'Что-то пошло не так! Попробуйте ещё раз.',
         });
-      });
+      })
+    .finally(() => setIsContentLoading(false))
   }
 
   function handleLogin(values) {
+    setIsContentLoading(true);
     auth
       .login(values)
       .then((data) => {
@@ -181,7 +184,8 @@ function App() {
               : 'Что-то пошло не так! Попробуйте ещё раз.'
           }`,
         });
-      });
+      })
+      .finally(() => setIsContentLoading(false))
   }
 
   function handleLogout() {
