@@ -12,7 +12,7 @@ const userModel = [
 const getCards = (_, res, next) => {
   Card.find({})
     .populate(userModel)
-    .then((users) => res.status(OK).send(users))
+    .then((cards) => res.status(OK).send(cards))
     .catch(next);
 };
 

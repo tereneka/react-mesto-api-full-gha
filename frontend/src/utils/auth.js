@@ -57,17 +57,6 @@ class Auth {
       method: 'POST',
     });
   }
-
-  // checkToken() {
-  //   const jwt = localStorage.getItem('jwt');
-  //   return this._getApi({
-  //     endpoint: 'users/me',
-  //     method: 'GET',
-  //     optionalHeaders: {
-  //       Authorization: `Bearer ${jwt}`,
-  //     },
-  //   });
-  // }
 }
 
 export const auth = new Auth(authConfig);

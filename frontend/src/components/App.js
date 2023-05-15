@@ -22,8 +22,6 @@ function App() {
   const [currentUser, setCurrentUser] = useState(
     {}
   );
-  const [currentUserEmail, setCurrentUserEmail] =
-    useState('');
 
   const [cards, setCards] = useState([]);
 
@@ -93,7 +91,11 @@ function App() {
     api
       .postCard(card)
       .then((data) => {
-        setCards([data, ...cards]);
+        const newCard = {
+          ...data,
+          owner: { _id: data.owner },
+        };
+        setCards([newCard, ...cards]);
         closeAllPopups();
       })
       .catch((err) => setIsError(err))
@@ -140,13 +142,32 @@ function App() {
     setTooltipData({ state: '', message: '' });
   }
 
+  function handleRegister(values) {
+    auth
+      .register(values)
+      .then((data) => {
+        if (data) {
+          setLoggedIn(true);
+          setCurrentUser(data);
+          navigate('/');
+        }
+      })
+      .catch(() => {
+        setTooltipData({
+          state: 'error',
+          message:
+            'Что-то пошло не так! Попробуйте ещё раз.',
+        });
+      });
+  }
+
   function handleLogin(values) {
     auth
       .login(values)
       .then((data) => {
         if (data) {
           setLoggedIn(true);
-          setCurrentUserEmail(values.email);
+          setCurrentUser(data);
           navigate('/');
         }
       })
@@ -162,20 +183,15 @@ function App() {
       });
   }
 
-  function handleRegister(values) {
+  function handleLogout() {
     auth
-      .register(values)
-      .then((res) => {
-        if (res.data) {
-          setTooltipData({
-            state: 'success',
-            message:
-              'Вы успешно зарегистрировались!',
-          });
-          navigate('/sign-in');
-        }
+      .logout()
+      .then(() => {
+        setCurrentUser({});
+        setLoggedIn(false);
+        navigate('/sign-in');
       })
-      .catch((err) => {
+      .catch(() => {
         setTooltipData({
           state: 'error',
           message:
@@ -184,59 +200,22 @@ function App() {
       });
   }
 
-  // function handleTokenCheck() {
-  //   if (localStorage.getItem('jwt')) {
-  //     setIsContentLoading(true);
-  //     auth
-  //       .checkToken()
-  //       .then((res) => {
-  //         if (res.data) {
-  //           setLoggedIn(true);
-  //           setCurrentUserEmail(res.data.email);
-  //           navigate('/');
-  //         }
-  //       })
-  //       .catch(() => {
-  //         localStorage.removeItem('jwt');
-  //         setIsContentLoading(false);
-  //       });
-  //   }
-  // }
-
   useEffect(() => {
-    // handleTokenCheck();
+    setIsContentLoading(true);
     api
       .getUserInfo()
       .then((data) => {
-        console.log(data);
         setLoggedIn(true);
         setCurrentUser(data);
-        setCurrentUserEmail(data.email);
         navigate('/');
       })
-      .catch((err) => {
-        setIsContentLoading(false);
-      });
+      .catch(() => {
+        setLoggedIn(false);
+        navigate('/sign-in');
+      })
+      .finally(() => setIsContentLoading(false));
   }, []);
 
-  // useEffect(() => {
-  //   if (loggedIn) {
-  //     Promise.all([
-  //       api.getUserInfo(),
-  //       api.getCards(),
-  //     ])
-  //       .then(([user, cards]) => {
-  //         setCurrentUser(user);
-  //         setCards([...cards]);
-  //       })
-  //       .catch((err) => {
-  //         setIsError(err);
-  //       })
-  //       .finally(() =>
-  //         setIsContentLoading(false)
-  //       );
-  //   }
-  // }, [loggedIn]);
   useEffect(() => {
     if (loggedIn) {
       api
@@ -266,7 +245,8 @@ function App() {
           <CurrentUserContext.Provider
             value={currentUser}>
             <Header
-              userEmail={currentUserEmail}
+              userEmail={currentUser.email}
+              onLogout={handleLogout}
             />
 
             <RouterApp
