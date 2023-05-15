@@ -208,6 +208,7 @@ function App() {
     api
       .getUserInfo()
       .then((data) => {
+        console.log(data);
         setLoggedIn(true);
         setCurrentUser(data);
         setCurrentUserEmail(data.email);

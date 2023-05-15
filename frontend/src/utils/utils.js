@@ -6,6 +6,20 @@ export const formConfig = {
   inputErrorClass: 'popup__input_type_error',
 };
 
+// export const dbConfig = {
+//   baseUrl: 'http://localhost:3000',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// };
+
+// export const authConfig = {
+//   baseUrl: 'http://localhost:3000',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// };
+
 export const dbConfig = {
   baseUrl:
     'https://api.mesto.tereneka.nomoredomains.monster',
