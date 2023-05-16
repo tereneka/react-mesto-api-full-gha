@@ -14,6 +14,8 @@ import InfoTooltip from './InfoTooltip';
 import RouterApp from './RouterApp';
 import Spinner from './Spinner';
 
+// большая часть ошибок была из-за того, что я забыла выполнить команду pm2 restart app
+// и на ВМ код не обновился
 function App() {
   const navigate = useNavigate();
 
@@ -151,6 +153,9 @@ function App() {
           setTooltipData({ state: 'success', message: 'Вы успешно зарегистрировались!' });
           setLoggedIn(true);
           setCurrentUser(data);
+          // я сделала сохранение токена в куки при регистрации, 
+          // чтобы пользователю не приходилось ещё и логинится, 
+          // поэтому редирект на аккаунт
           navigate('/');
         }
       })
@@ -169,6 +174,7 @@ function App() {
     auth
       .login(values)
       .then((data) => {
+        console.log(data);
         if (data) {
           setLoggedIn(true);
           setCurrentUser(data);
@@ -189,6 +195,8 @@ function App() {
   }
 
   function handleLogout() {
+    // токен не удалялся, т.к. у меня не прошли обновления на сервере
+    // сейчас всё работает без document.cookie = "jwt="; 
     auth
       .logout()
       .then(() => {
@@ -210,6 +218,7 @@ function App() {
     api
       .getUserInfo()
       .then((data) => {
+        console.log(data);
         setLoggedIn(true);
         setCurrentUser(data);
         navigate('/');
